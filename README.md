@@ -103,7 +103,7 @@ Do not claim real-API acceptance until all three runs complete successfully. PDF
 
 Import the repository into Vercel, choose the `bidcheck` directory as the project root, add the environment variables above, and deploy. The App Router route runs on the Node.js runtime and streams `application/x-ndjson`; no database, account system, history service, or persistent document store is used.
 
-MIT License
+## MIT License
 
 Copyright (c) 2026 Daniel Lozovsky
 
