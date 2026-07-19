@@ -103,6 +103,49 @@ Do not claim real-API acceptance until all three runs complete successfully. PDF
 
 Import the repository into Vercel, choose the `bidcheck` directory as the project root, add the environment variables above, and deploy. The App Router route runs on the Node.js runtime and streams `application/x-ndjson`; no database, account system, history service, or persistent document store is used.
 
+## How Codex and GPT-5.6 were used
+
+BidCheck was built solo during OpenAI Build Week. I used Codex with GPT-5.6 Sol at high reasoning effort as an engineering collaborator throughout the core build—not simply to generate an initial scaffold.
+
+### Codex with GPT-5.6 Sol
+
+Codex helped me:
+
+- Convert the initial prompt pack and rulebook into a working Next.js application with a three-stage analysis pipeline.
+- Design the Zod schemas and strict Structured Outputs used for solicitation extraction and compliance findings.
+- Implement the streaming `/api/analyze` route, staged progress events, error handling, and server-side result enrichment.
+- Build the interface for reviewing extracted requirements, rule findings, supporting evidence, aggregate signals, and the final bid/no-bid memo.
+- Test malformed model responses, missing company information, prompt-injection attempts inside solicitation text, provider failures, and incomplete analyses.
+- Identify weaknesses in the original design, including the inability to evaluate company readiness without company context and the risk of treating missing evidence as a compliance failure.
+- Review the rulebook structure and surface citations or policy references that required current-source verification.
+
+I made the final product and domain decisions. These included:
+
+- Introducing five distinct finding statuses, with `not_evaluated` separated from `needs_review`.
+- Establishing the rule that absence of evidence is never automatically classified as a gap.
+- Preventing an unconditional `BID` recommendation when no company profile is supplied.
+- Deriving risk, readiness coverage, and confidence deterministically on the server instead of asking the model to invent numeric scores.
+- Separating contractor-readiness rules from solicitation-side advisory findings.
+- Keeping the first release focused on decision support instead of expanding into proposal generation, SAM.gov integration, authentication, or persistent document storage.
+
+The majority of the core functionality was developed in one primary Codex session.
+
+**Primary `/feedback` session ID:** `[YOUR_SESSION_ID]`
+
+### Runtime model strategy
+
+BidCheck uses `[ACTUAL_API_MODEL]` through the OpenAI Responses API for its runtime analysis. I selected a cost-efficient runtime model intentionally rather than defaulting every production request to the most expensive model.
+
+The model performs bounded tasks:
+
+1. Extract structured requirements and verbatim evidence from the solicitation.
+2. Evaluate triggered rulebook checks against the extraction and self-reported company context.
+3. Produce an evidence-linked executive recommendation.
+
+Structured outputs are validated with Zod, while aggregate risk, readiness coverage, and confidence are calculated in application code. This keeps the model focused on language and evidence analysis while deterministic business rules remain under application control.
+
+Using GPT-5.6 Sol in Codex for architecture and implementation, combined with a lower-cost runtime model, was a deliberate engineering decision: use the strongest reasoning where it had the greatest development leverage, then operate the resulting product at a practical per-analysis cost.
+
 ## MIT License
 
 Copyright (c) 2026 Daniel Lozovsky
