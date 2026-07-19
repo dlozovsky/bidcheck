@@ -4,7 +4,21 @@ BidCheck turns federal solicitation text into an evidence-grounded bid/no-bid me
 
 > Decision support only. Findings are based on solicitation text and self-reported company evidence. They are not legal advice or a contracting-officer determination.
 
-Copyright Daniel Lozovsky. All rights reserved.
+**Built solo for OpenAI Build Week · Work & Productivity**
+
+- **Live application:** `[ADD VERCEL URL BEFORE SUBMISSION]`
+- **Demo video:** `[ADD PUBLIC YOUTUBE URL BEFORE SUBMISSION]`
+- **Primary Codex `/feedback` session:** `[ADD SESSION ID BEFORE SUBMISSION]`
+
+## Evaluate BidCheck in 60 seconds
+
+1. Open the live application—no account is required.
+2. Load a bundled sample solicitation.
+3. Run it without a company profile and observe that applicable readiness rules remain `not_evaluated` rather than becoming unsupported gaps.
+4. Add the bundled sample company profile and run it again.
+5. Watch the unresolved findings become evidence-backed readiness results, then review the resulting recommendation and memo.
+
+This before-and-after comparison is the core product behavior: BidCheck makes readiness claims only when the user supplies relevant company evidence.
 
 ## Demo flow
 
@@ -13,7 +27,7 @@ Copyright Daniel Lozovsky. All rights reserved.
 3. Run BidCheck and watch extraction, rule checking, and memo generation progress in real time.
 4. Review opportunity risk separately from readiness coverage, then copy or export the memo and full JSON result.
 
-The active analysis is stored only in browser `sessionStorage`. The API sets `store: false` on every OpenAI request and never logs submitted text.
+The active analysis is stored only in browser `sessionStorage`. The API sets `store: false` on every OpenAI request, and the application does not intentionally write submitted text to its logs or a database. Requests remain subject to the applicable infrastructure-provider terms and retention settings.
 
 ## Architecture
 
@@ -88,16 +102,16 @@ npm run build
 
 The automated scope is intentionally small: unit coverage for the five-status integrity guardrails and aggregate-signal math, plus exactly two mocked route cases (complete stream and safe pipeline failure). Browser behavior, responsive layout, keyboard navigation, focus visibility, contrast, and failure-state presentation are manual checks; there is no browser automation or automated accessibility audit.
 
-## Three-sample acceptance
+## Acceptance criteria
 
-The bundled records under `data/samples/` are synthetic development fixtures. Replace their text with the three final supplied samples while retaining the same JSON shape. With production-like OpenAI credentials:
+The bundled records under `data/samples/` are synthetic development fixtures. Before submission, three final samples will be exercised using production-like credentials and the same `gpt-5.6-sol` configuration used by the public demo.
 
 1. Run each sample through the real API with and without relevant company context where useful.
 2. Verify every rule appears once, absent evidence remains `not_evaluated`, and confidence matches readiness coverage.
 3. Save the final JSON export and desktop/mobile screenshots for each sample as the offline demo fallback.
 4. Record model names and the run date alongside the artifacts.
 
-Do not claim real-API acceptance until all three runs complete successfully. PDF upload remains out of scope and absent from the UI.
+Real-API acceptance results will be documented here only after all three samples complete successfully. PDF upload remains out of scope and absent from the UI.
 
 ## Deployment
 
@@ -130,13 +144,13 @@ I made the final product and domain decisions. These included:
 
 The majority of the core functionality was developed in one primary Codex session.
 
-**Primary `/feedback` session ID:** `[YOUR_SESSION_ID]`
+**Primary `/feedback` session ID:** `[ADD SESSION ID BEFORE SUBMISSION]`
 
 ### Runtime model strategy
 
-BidCheck uses `[ACTUAL_API_MODEL]` through the OpenAI Responses API for its runtime analysis. I selected a cost-efficient runtime model intentionally rather than defaulting every production request to the most expensive model.
+During the Build Week submission and judging window, all three runtime stages use `gpt-5.6-sol` through the OpenAI Responses API—the same model tier used with Codex during development. I chose one explicitly pinned model for the evaluated build so the extraction, gap-check, and memo behavior could be accepted and demonstrated against a consistent configuration.
 
-The model performs bounded tasks:
+GPT-5.6 Sol performs three bounded tasks:
 
 1. Extract structured requirements and verbatim evidence from the solicitation.
 2. Evaluate triggered rulebook checks against the extraction and self-reported company context.
@@ -144,27 +158,19 @@ The model performs bounded tasks:
 
 Structured outputs are validated with Zod, while aggregate risk, readiness coverage, and confidence are calculated in application code. This keeps the model focused on language and evidence analysis while deterministic business rules remain under application control.
 
-Using GPT-5.6 Sol in Codex for architecture and implementation, combined with a lower-cost runtime model, was a deliberate engineering decision: use the strongest reasoning where it had the greatest development leverage, then operate the resulting product at a practical per-analysis cost.
+After judging, lower-cost models can be benchmarked against the same acceptance set before any production routing change. That optimization is deliberately outside the evaluated hackathon build; no smaller model is claimed as validated here.
 
-## MIT License
+## Pre-submission checklist
 
-Copyright (c) 2026 Daniel Lozovsky
+- [ ] Replace the live-application placeholder with the final Vercel URL.
+- [ ] Replace the demo-video placeholder with the public or unlisted YouTube URL and verify it in a private browser window.
+- [ ] Add the primary Codex `/feedback` session ID here and to the Devpost form.
+- [ ] Replace the development fixtures with three final synthetic samples.
+- [ ] Run all three samples through the real API using `gpt-5.6-sol` and record the run date.
+- [ ] Save fallback JSON results and desktop/mobile screenshots.
+- [ ] Rewrite the acceptance section in past tense with the actual results.
+- [ ] Confirm the public repository contains the root-level `LICENSE` file.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## License
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
+MIT License © 2026 Daniel Lozovsky — see [LICENSE](LICENSE).
