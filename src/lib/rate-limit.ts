@@ -24,8 +24,12 @@ function positiveInteger(value: string | undefined, fallback: number) {
 function getLimiters() {
   if (limiters) return limiters;
 
-  const url = process.env.UPSTASH_REDIS_REST_URL?.trim();
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
+  const url =
+    process.env.UPSTASH_REDIS_REST_URL?.trim() ||
+    process.env.KV_REST_API_URL?.trim();
+  const token =
+    process.env.UPSTASH_REDIS_REST_TOKEN?.trim() ||
+    process.env.KV_REST_API_TOKEN?.trim();
   if (!url || !token) {
     if (process.env.NODE_ENV === "production") {
       throw new RateLimitConfigurationError(

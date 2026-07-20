@@ -71,8 +71,8 @@ If local API calls fail with `UNABLE_TO_VERIFY_LEAF_SIGNATURE` on a managed Wind
 | `OPENAI_MEMO_MODEL` | No | Memo model; defaults to `gpt-5.6-sol` |
 | `SAFETY_IDENTIFIER_SECRET` | Production | HMAC key for session-derived OpenAI safety identifiers |
 | `RATE_LIMIT_HMAC_SECRET` | Production | Independent HMAC key for non-reversible client-IP keys |
-| `UPSTASH_REDIS_REST_URL` | Production | Upstash REST endpoint |
-| `UPSTASH_REDIS_REST_TOKEN` | Production | Upstash REST token |
+| `UPSTASH_REDIS_REST_URL` or `KV_REST_API_URL` | Production | Upstash REST endpoint; Vercel Marketplace injects the `KV_*` name |
+| `UPSTASH_REDIS_REST_TOKEN` or `KV_REST_API_TOKEN` | Production | Writable Upstash REST token; Vercel Marketplace injects the `KV_*` name |
 | `RATE_LIMIT_PER_IP` | No | Requests per IP per 15 minutes; defaults to `5` |
 | `RATE_LIMIT_GLOBAL` | No | Requests across the demo per UTC-day window; defaults to `100` |
 | `ENABLE_PDF_UPLOAD` | No | Reserved and must remain `false` for this build |
